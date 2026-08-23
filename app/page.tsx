@@ -39,6 +39,33 @@ function stickerFiles(): string[] {
   }
 }
 
+/**
+ * Whether a file can carry transparency, read from the PNG header at build time.
+ * Byte 25 of a PNG is the IHDR colour type: 6 is RGBA, 4 is grey+alpha.
+ * JPEG has no alpha channel at all.
+ *
+ * This used to be detected in the browser by sampling the canvas, which meant
+ * every sticker rendered inside a white photo frame for a moment and then
+ * snapped to a cutout once the check finished. Deciding at build time removes
+ * that flash entirely.
+ */
+function hasAlpha(file: string): boolean {
+  const ext = file.split(".").pop()!.toLowerCase();
+  if (ext === "jpg" || ext === "jpeg") return false;
+  if (ext !== "png") return true; // webp/avif/gif: assume transparency
+  try {
+    const fd = fs.openSync(path.join(process.cwd(), "public", "stickers", file), "r");
+    const head = Buffer.alloc(26);
+    fs.readSync(fd, head, 0, 26, 0);
+    fs.closeSync(fd);
+    const colourType = head[25];
+    return colourType === 6 || colourType === 4;
+  } catch {
+    return false;
+  }
+}
+
 export default function Home() {
-  return <Shell stickers={stickerFiles()} />;
+  const files = stickerFiles();
+  return <Shell stickers={files.map((f) => ({ file: f, cutout: hasAlpha(f) }))} />;
 }

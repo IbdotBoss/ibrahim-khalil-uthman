@@ -5,6 +5,7 @@ import { applications, about, profile, type Rec } from "@/data/records";
 import Clock from "./Clock";
 import Stickers from "./Stickers";
 import Bismillah from "./Bismillah";
+import Disclaimer from "./Disclaimer";
 
 const FAVE_KEY = "uthman-site:favourites";
 
@@ -40,7 +41,7 @@ function Star({ on, onClick, label }: { on: boolean; onClick: () => void; label:
   );
 }
 
-export default function Shell({ stickers }: { stickers: string[] }) {
+export default function Shell({ stickers }: { stickers: { file: string; cutout: boolean }[] }) {
   const [query, setQuery] = useState("");
   const [faves, setFaves] = useState<string[]>([]);
   const [activeRecord, setActiveRecord] = useState<string>("about");
@@ -236,11 +237,10 @@ export default function Shell({ stickers }: { stickers: string[] }) {
                 {line}
               </p>
             ))}
-            <Stickers files={stickers} />
-            <p className="caution" role="note">
-              <span className="cautionicon" aria-hidden="true">!</span>
-              {about.caution}
-            </p>
+            <div className="stickerstage">
+              <Stickers files={stickers} />
+              <Disclaimer text={about.caution} />
+            </div>
             <p className="scrollhint">scroll, or pick a module</p>
             </div>
           </section>
@@ -339,7 +339,7 @@ export default function Shell({ stickers }: { stickers: string[] }) {
                           );
                         })}
                       </tr>
-                      {(r.problem || r.built) && (
+                      {r.siteDetail !== false && (r.problem || r.built) && (
                         <tr data-zebra={i % 2 === 1}>
                           <td colSpan={app.columns.length}>
                             <div className="detail">

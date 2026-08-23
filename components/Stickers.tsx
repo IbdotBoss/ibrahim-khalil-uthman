@@ -22,7 +22,7 @@ const PLACED: Record<
   // cutout: true means the file already has a transparent background, so it gets
   // an outline traced round its alpha instead of a white photo frame.
   urus: { label: "the Urus", w: 320, x: 10, y: 26, rotate: -3 },
-  dunk: { label: "dunks", w: 190, x: 372, y: 0, rotate: 7, cutout: true },
+  dunk: { label: "dunks", w: 190, x: 372, y: 0, rotate: 7 },
   bike: { label: "AMFLOW", w: 280, x: 606, y: 96, rotate: 4 },
   basketball: { label: "ball", w: 200, x: 596, y: 322, rotate: -5 },
   money: { label: "money", w: 170, x: 384, y: 372, rotate: 6 },
@@ -39,8 +39,8 @@ const RING = [
   { x: 760, y: 300 },
 ];
 
-function build(files: string[]): Sticker[] {
-  return files.map((file, i) => {
+function build(files: { file: string; cutout: boolean }[]): Sticker[] {
+  return files.map(({ file, cutout }, i) => {
     const base = file.replace(/\.[^.]+$/, "").toLowerCase();
     const placed = PLACED[base];
     const ring = RING[i % RING.length];
@@ -52,12 +52,12 @@ function build(files: string[]): Sticker[] {
       x: placed?.x ?? ring.x,
       y: placed?.y ?? ring.y,
       rotate: placed?.rotate ?? (i % 2 === 0 ? -4 : 5),
-      cutout: placed?.cutout,
+      cutout,
     };
   });
 }
 
-export default function Stickers({ files }: { files: string[] }) {
+export default function Stickers({ files }: { files: { file: string; cutout: boolean }[] }) {
   const initial = useRef<Sticker[]>(build(files));
   const [items, setItems] = useState<Sticker[]>(initial.current);
   const [dragId, setDragId] = useState<string | null>(null);
