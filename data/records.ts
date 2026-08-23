@@ -19,19 +19,18 @@ export type Application = {
 };
 
 export const profile = {
-  name: "Uthman Ibrahim",
-  greenIndex: 8,
+  name: "Ibrahim Khalil Uthman",
+  greenIndex: 15,
   timezone: "Europe/London",
 };
 
 export const about = {
   id: "about",
   name: "About",
-  placeholder: true,
   lines: [
-    "Placeholder. Two or three sentences go here, in Stage's own voice.",
-    "What he makes, what he does that others skip, what he wants next.",
+    "Let's tinker and figure things out. I do my best work alongside others, whether I'm untangling a tricky problem or building something from scratch.",
   ],
+  caution: "Caution: good enough is not good enough.",
 };
 
 export const applications: Application[] = [
@@ -53,10 +52,6 @@ export const applications: Application[] = [
           type: "Part-time",
           period: "May 2026 — present",
         },
-        problem:
-          "Automates enterprise workflows with Business Rules and Client Scripts, streamlining ITSM and asset processes.",
-        built:
-          "Builds and configures REST APIs for real-time integration between ServiceNow and external platforms, and develops custom applications, Service Catalog items and Flow Designer actions.",
       },
       {
         id: "sn-admin",
@@ -66,10 +61,6 @@ export const applications: Application[] = [
           type: "Internship",
           period: "May — Sep 2025",
         },
-        problem:
-          "Administered user roles, group memberships, Access Control Lists and security policies across platform environments.",
-        built:
-          "Maintained CMDB data integrity, configured system properties and form layouts, built interactive dashboards and reports, and delivered Tier-2 platform support.",
       },
       {
         id: "asset-manager",
@@ -79,10 +70,6 @@ export const applications: Application[] = [
           type: "Internship",
           period: "May — Sep 2024",
         },
-        problem:
-          "Managed the full lifecycle of IT hardware and software licence allocation.",
-        built:
-          "Ran regular inventory and licence audits, kept the estate compliant and eliminated waste, and tracked allocations, subscriptions and secure decommissioning under governance policy.",
       },
       {
         id: "hardware-asset",

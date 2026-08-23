@@ -10,8 +10,8 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "Uthman Ibrahim",
-  description: "Developer. ServiceNow CAD. Builds tools to solve problems he actually has.",
+  title: "Ibrahim Uthman",
+  description: "ServiceNow Developer. CSA and CAD certified. Builds tools to solve problems he actually has.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

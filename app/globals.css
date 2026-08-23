@@ -113,15 +113,12 @@ button {
 }
 
 .avatar {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
+  object-fit: cover;
   background: #f3f8f9;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--rail-bg);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 /* rail */
@@ -264,8 +261,7 @@ button {
 }
 
 .inner {
-  max-width: 1080px;
-  padding: 0 28px 30vh;
+  padding: 0 0 30vh;
 }
 
 .about {
@@ -300,16 +296,32 @@ button {
   margin: 0;
 }
 
-.placeholdertag {
-  display: inline-block;
-  align-self: flex-start;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  padding: 3px 8px;
-  margin-bottom: 20px;
+.bismillah {
+  align-self: center;
+  width: 300px;
+  max-width: 62%;
+  margin-bottom: 28px;
+  line-height: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.bismillah img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.bismillah[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.bismillah:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 6px;
 }
 
 .scrollhint {
@@ -326,8 +338,8 @@ button {
   justify-content: space-between;
   gap: 16px;
   height: 45px;
-  padding: 6px 12px;
-  margin-top: 72px;
+  padding: 6px 16px;
+  margin-top: 0;
   background: #e5edef;
   border-bottom: 1px solid rgba(203, 216, 221, 0.2);
 }
@@ -347,7 +359,7 @@ button {
   height: 30px;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 16px;
   background: var(--zebra);
   font-size: 14px;
   color: var(--ink);
@@ -366,7 +378,7 @@ button {
 
 .recordtable th {
   height: var(--row);
-  padding: 4px 10px;
+  padding: 4px 16px;
   font-size: 14px;
   font-weight: 700;
   text-align: left;
@@ -377,7 +389,7 @@ button {
 }
 
 .recordtable td {
-  padding: 4px 12px;
+  padding: 4px 16px;
   font-size: 14px;
   vertical-align: top;
   border-bottom: 1px solid var(--line);
@@ -407,7 +419,7 @@ button {
 }
 
 .detail {
-  padding: 2px 12px 16px;
+  padding: 2px 16px 16px;
   max-width: 76ch;
 }
 
@@ -448,9 +460,9 @@ button {
 
 .stickers {
   position: relative;
-  height: 420px;
-  margin-top: 24px;
-  max-width: 620px;
+  height: 560px;
+  margin-top: 20px;
+  width: 100%;
   touch-action: none;
 }
 
@@ -458,31 +470,24 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 7px 12px;
-  font-size: 14px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px;
+  background: #ffffff;
+  line-height: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
   cursor: grab;
   user-select: none;
   touch-action: none;
-  white-space: nowrap;
 }
 
-/* Rectangular photo: white sticker frame. CSS cannot cut a subject out of a
-   photo, so a frame is the honest treatment for an image with a solid
-   background. */
-.sticker[data-image="true"] {
-  padding: 6px;
-  background: #ffffff;
-  border: 0;
-  line-height: 0;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+.sticker img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
 }
 
-/* True cutout: a transparent PNG gets an outline traced around its alpha
-   channel by stacked drop-shadows. Useless on a rectangle, correct once the
-   subject is actually cut out. */
+/* True cutout: a transparent PNG gets an outline traced around its alpha by
+   stacked drop-shadows. Useless on a rectangle, correct once cut out. */
 .sticker[data-cutout="true"] {
   padding: 0;
   background: none;
@@ -491,13 +496,6 @@ button {
     drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff)
     drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)
     drop-shadow(0 8px 14px rgba(0, 0, 0, 0.6));
-}
-
-.sticker[data-image="true"] img {
-  width: 100%;
-  height: auto;
-  display: block;
-  pointer-events: none;
 }
 
 .sticker[data-dragging="true"] {
@@ -581,7 +579,7 @@ button {
   }
 
   .inner {
-    padding: 0 16px 20vh;
+    padding: 0 0 20vh;
   }
 
   .about {
@@ -597,8 +595,7 @@ button {
   }
 
   .stickers {
-    height: 320px;
-    max-width: 100%;
+    height: 340px;
   }
 
   .about {
@@ -612,7 +609,7 @@ button {
 
 .formview {
   border-bottom: 1px solid var(--line);
-  padding: 6px 0 18px;
+  padding: 6px 16px 18px;
 }
 
 .formgrid {
@@ -644,8 +641,7 @@ button {
 .linkspanel {
   list-style: none;
   margin: 0;
-  padding: 0;
-  max-width: 860px;
+  padding: 0 4px;
 }
 
 .linkspanel li {
@@ -680,4 +676,42 @@ button {
   .linknote {
     display: none;
   }
+}
+
+.appsection + .appsection .listtoolbar {
+  margin-top: 56px;
+}
+
+.about + .inner .appsection:first-child .listtoolbar {
+  margin-top: 0;
+}
+
+/* caution banner — the platform shows info and warning banners above a
+   record, so this sits inside the metaphor rather than on top of it */
+
+.caution {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  margin: 28px 0 0;
+  padding: 9px 14px 9px 11px;
+  font-size: 14px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+  border-left: 3px solid var(--mark);
+}
+
+.cautionicon {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border-radius: 50%;
+  background: var(--mark);
+  color: #06210a;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
 }

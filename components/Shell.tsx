@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import { applications, about, profile, type Rec } from "@/data/records";
 import Clock from "./Clock";
 import Stickers from "./Stickers";
+import Bismillah from "./Bismillah";
 
 const FAVE_KEY = "uthman-site:favourites";
 
@@ -39,7 +40,7 @@ function Star({ on, onClick, label }: { on: boolean; onClick: () => void; label:
   );
 }
 
-export default function Shell() {
+export default function Shell({ stickers }: { stickers: string[] }) {
   const [query, setQuery] = useState("");
   const [faves, setFaves] = useState<string[]>([]);
   const [activeRecord, setActiveRecord] = useState<string>("about");
@@ -125,9 +126,8 @@ export default function Shell() {
         </button>
         <div className="headmeta">
           <Clock />
-          <span className="avatar" aria-hidden="true">
-            UI
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="avatar" src="/stickers/avatar.jpg" alt="Ibrahim Uthman" />
         </div>
       </header>
 
@@ -229,14 +229,18 @@ export default function Shell() {
           {aboutVisible && (
           <section className="about" id="about" data-spy="about" data-app="About" data-appid="about">
             <div className="aboutinner">
-            <span className="placeholdertag">placeholder copy</span>
-            <h1 className="hello">Hey, I&apos;m Uthman</h1>
+            <Bismillah />
+            <h1 className="hello">Hey, I&apos;m Ibrahim</h1>
             {about.lines.map((line, i) => (
               <p className="abouttext" key={i}>
                 {line}
               </p>
             ))}
-            <Stickers />
+            <Stickers files={stickers} />
+            <p className="caution" role="note">
+              <span className="cautionicon" aria-hidden="true">!</span>
+              {about.caution}
+            </p>
             <p className="scrollhint">scroll, or pick a module</p>
             </div>
           </section>
@@ -244,7 +248,7 @@ export default function Shell() {
 
         <div className="inner">
           {filtered.map((app) => (
-            <section key={app.id}>
+            <section key={app.id} className="appsection">
               <div className="listtoolbar" id={`app-${app.id}`}>
                 <span className="listtitle">{app.name}</span>
                 <span className="listcount">
