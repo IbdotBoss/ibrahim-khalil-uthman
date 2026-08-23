@@ -69,8 +69,9 @@ is read from the PNG header at build time, so a cut-out image gets a white outli
 traced round its alpha and a photo with a solid background gets a photo frame.
 Give it a placement in `PLACED` in `Stickers.tsx` if you don't want it scattered.
 
-Keep the originals: `public/stickers/originals` holds the full-size versions, and
-the served copies are downscaled to display size. The whole set is about 500KB.
+Full-size sources are kept in `assets/sticker-originals/`, outside `public/` so
+they are backed up by the repo without being served. The copies in
+`public/stickers` are downscaled to display size, about 1.4MB for the set.
 
 ### Adding a record
 

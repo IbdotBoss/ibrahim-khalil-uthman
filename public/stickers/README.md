@@ -12,3 +12,7 @@ any that are missing fall back to a labelled placeholder box, so partial sets ar
 
 PNG or WEBP both work; the code does not care about the extension as long as the
 name matches. Keep them under about 400KB each, they are decoration not evidence.
+
+Full-size sources live in `assets/sticker-originals/`, one level up and outside
+`public/`, so they stay in the repo as a backup without being served to visitors.
+The files here are downscaled to display size.
