@@ -460,8 +460,8 @@ button {
 
 .stickers {
   position: relative;
-  height: 600px;
-  margin-top: 20px;
+  height: 620px;
+  margin-top: 16px;
   width: 100%;
   touch-action: none;
 }
@@ -594,8 +594,13 @@ button {
     display: none;
   }
 
+  /* The collage is laid out at a fixed size, so scale the whole stage down
+     rather than letting absolutely positioned stickers spill off a phone. */
   .stickers {
-    height: 340px;
+    height: 300px;
+    transform: scale(0.46);
+    transform-origin: top left;
+    width: 217%;
   }
 
   .about {

@@ -2,9 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "uthman-site",
+      "name": "ibrahim-khalil-uthman",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3210
     }
   ]

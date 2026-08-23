@@ -15,19 +15,24 @@ type Sticker = {
 
 // Known files get a deliberate placement and size. Anything else dropped into
 // public/stickers is scattered on a ring, so it appears without a code change.
-const PLACED: Record<
-  string,
-  { label: string; w: number; x: number; y: number; rotate: number; cutout?: boolean }
-> = {
-  // cutout: true means the file already has a transparent background, so it gets
-  // an outline traced round its alpha instead of a white photo frame.
-  urus: { label: "the Urus", w: 320, x: 10, y: 26, rotate: -3 },
-  dunk: { label: "dunks", w: 190, x: 372, y: 0, rotate: 7 },
-  bike: { label: "AMFLOW", w: 280, x: 606, y: 96, rotate: 4 },
-  basketball: { label: "ball", w: 200, x: 596, y: 322, rotate: -5 },
-  money: { label: "money", w: 170, x: 384, y: 372, rotate: 6 },
-  pepe: { label: "the desk", w: 150, x: 214, y: 300, rotate: -6 },
-  photo: { label: "me", w: 160, x: 16, y: 322, rotate: 3 },
+const PLACED: Record<string, { label: string; w: number; x: number; y: number; rotate: number }> = {
+  // Laid out across roughly 1050 x 620. Anything not listed falls back to the
+  // ring below, which is only a safety net; add a placement instead.
+  urus: { label: "the Urus", w: 300, x: 8, y: 8, rotate: -3 },
+  dunk: { label: "dunks", w: 150, x: 344, y: 0, rotate: 7 },
+  gt: { label: "GT", w: 180, x: 528, y: 22, rotate: -4 },
+  bbc: { label: "BBC", w: 130, x: 762, y: 4, rotate: 5 },
+
+  mecca: { label: "Mecca", w: 150, x: 26, y: 190, rotate: 3 },
+  bike: { label: "AMFLOW", w: 250, x: 214, y: 176, rotate: 4 },
+  ghost: { label: "ghost", w: 150, x: 512, y: 196, rotate: -6 },
+  daily_paper: { label: "Daily Paper", w: 190, x: 700, y: 214, rotate: 4 },
+
+  photo: { label: "me", w: 150, x: 16, y: 386, rotate: -2 },
+  pepe: { label: "the desk", w: 140, x: 196, y: 402, rotate: -6 },
+  money: { label: "money", w: 160, x: 362, y: 396, rotate: 6 },
+  basketball: { label: "ball", w: 170, x: 552, y: 400, rotate: -5 },
+  dp: { label: "DP", w: 150, x: 756, y: 420, rotate: 6 },
 };
 
 const RING = [

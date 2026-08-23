@@ -4,7 +4,3 @@ node_modules
 out
 *.tsbuildinfo
 next-env.d.ts
-
-# Full-size source images. The served copies in public/stickers are what the
-# site uses; these stay on disk but are not worth 4.5MB in the repo.
-public/stickers/originals/
