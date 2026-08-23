@@ -160,10 +160,10 @@ button {
 .appname {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   min-height: var(--row);
-  padding: 6px 12px 6px 8px;
+  padding: 6px 12px 6px 16px;
   font-size: 16px;
   font-weight: 700;
 }
@@ -172,13 +172,30 @@ button {
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* Matches the instance: 18px box, 16px glyph, label starting 8px after it. */
 .chev {
   width: 18px;
+  height: 18px;
   flex: 0 0 18px;
-  font-size: 14px;
-  line-height: 1;
+  display: grid;
+  place-items: center;
   color: var(--rail-ink);
-  text-align: center;
+}
+
+.chevbox {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  transition: transform 120ms ease;
+}
+
+.chevbox[data-open="false"] {
+  transform: rotate(-90deg);
+}
+
+.chevbox svg {
+  display: block;
 }
 
 .chev:disabled {
@@ -458,11 +475,15 @@ button {
 
 /* stickers */
 
+.stickerfit {
+  width: 100%;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
 .stickers {
   position: relative;
-  height: 620px;
-  margin-top: 16px;
-  width: 100%;
+  transform-origin: top left;
   touch-action: none;
 }
 
@@ -594,14 +615,7 @@ button {
     display: none;
   }
 
-  /* The collage is laid out at a fixed size, so scale the whole stage down
-     rather than letting absolutely positioned stickers spill off a phone. */
-  .stickers {
-    height: 300px;
-    transform: scale(0.46);
-    transform-origin: top left;
-    width: 217%;
-  }
+  /* scaling is handled in the component now */
 
   .about {
     margin: 0 -16px;

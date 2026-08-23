@@ -6,6 +6,7 @@ import Clock from "./Clock";
 import Stickers from "./Stickers";
 import Bismillah from "./Bismillah";
 import Disclaimer from "./Disclaimer";
+import Chevron from "./Chevron";
 
 const FAVE_KEY = "uthman-site:favourites";
 
@@ -191,7 +192,7 @@ export default function Shell({ stickers }: { stickers: { file: string; cutout: 
                   onClick={() => toggleApp(app.id)}
                   disabled={Boolean(query)}
                 >
-                  {isOpen(app.id) ? "⌄" : "›"}
+                  <Chevron open={isOpen(app.id)} />
                 </button>
                 <button className="appjump" onClick={() => jump(`app-${app.id}`)}>
                   <span>{app.name}</span>

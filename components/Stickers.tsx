@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Sticker = {
   id: string;
@@ -62,20 +62,39 @@ function build(files: { file: string; cutout: boolean }[]): Sticker[] {
   });
 }
 
+const STAGE_W = 1050;
+const STAGE_H = 620;
+
 export default function Stickers({ files }: { files: { file: string; cutout: boolean }[] }) {
   const initial = useRef<Sticker[]>(build(files));
   const [items, setItems] = useState<Sticker[]>(initial.current);
   const [dragId, setDragId] = useState<string | null>(null);
+  const [scale, setScale] = useState(1);
   const offset = useRef({ x: 0, y: 0 });
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  // The collage is authored at a fixed 1050x620 and scaled to whatever width
+  // the pane actually has. Without this the stickers are simply wider than the
+  // content area on a smaller window, which pushes the whole page sideways and
+  // leaves a strip of dead space beside the black panel.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const fit = () => setScale(Math.min(1, el.clientWidth / STAGE_W));
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>, s: Sticker) => {
     try {
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     } catch {}
-    offset.current = { x: e.clientX - s.x, y: e.clientY - s.y };
+    offset.current = { x: e.clientX / scale - s.x, y: e.clientY / scale - s.y };
     setDragId(s.id);
     setItems((prev) => [...prev.filter((p) => p.id !== s.id), prev.find((p) => p.id === s.id)!]);
-  }, []);
+  }, [scale]);
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -83,12 +102,12 @@ export default function Stickers({ files }: { files: { file: string; cutout: boo
       setItems((prev) =>
         prev.map((p) =>
           p.id === dragId
-            ? { ...p, x: e.clientX - offset.current.x, y: e.clientY - offset.current.y }
+            ? { ...p, x: e.clientX / scale - offset.current.x, y: e.clientY / scale - offset.current.y }
             : p
         )
       );
     },
-    [dragId]
+    [dragId, scale]
   );
 
   const nudge = useCallback((id: string, dx: number, dy: number) => {
@@ -98,7 +117,13 @@ export default function Stickers({ files }: { files: { file: string; cutout: boo
   if (!items.length) return null;
 
   return (
-    <div className="stickers" onPointerMove={onPointerMove} onPointerUp={() => setDragId(null)}>
+    <div className="stickerfit" ref={wrapRef} style={{ height: STAGE_H * scale }}>
+      <div
+        className="stickers"
+        style={{ width: STAGE_W, height: STAGE_H, transform: `scale(${scale})` }}
+        onPointerMove={onPointerMove}
+        onPointerUp={() => setDragId(null)}
+      >
       {items.map((s) => (
         <div
           key={s.id}
@@ -122,9 +147,10 @@ export default function Stickers({ files }: { files: { file: string; cutout: boo
           <img src={s.src} alt={s.label} draggable={false} />
         </div>
       ))}
-      <button className="stickerreset" onClick={() => setItems(initial.current)}>
-        reset layout
-      </button>
+        <button className="stickerreset" onClick={() => setItems(initial.current)}>
+          reset layout
+        </button>
+      </div>
     </div>
   );
 }
