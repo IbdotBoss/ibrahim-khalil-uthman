@@ -140,10 +140,6 @@ button {
   transition: opacity 220ms ease;
 }
 
-.rail[data-dim="true"] {
-  opacity: 0.34;
-}
-
 .filterwrap {
   padding: 0 16px 14px;
 }
@@ -169,8 +165,8 @@ button {
   align-items: center;
   gap: 6px;
   width: 100%;
-  height: var(--row);
-  padding: 4px 12px 4px 8px;
+  min-height: var(--row);
+  padding: 6px 12px 6px 8px;
   font-size: 16px;
   font-weight: 700;
 }
@@ -211,9 +207,10 @@ button {
   justify-content: space-between;
   gap: 8px;
   width: 100%;
-  height: var(--row);
-  padding: 4px 12px 4px 14px;
+  min-height: var(--row);
+  padding: 6px 12px 6px 14px;
   font-size: 16px;
+  line-height: 1.3;
   color: var(--rail-ink);
   text-align: left;
 }
@@ -228,6 +225,9 @@ button {
 }
 
 .star {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-top: 2px;
   font-size: 14px;
   line-height: 1;
   color: var(--mark);
@@ -271,9 +271,17 @@ button {
 .about {
   min-height: calc(100vh - var(--header));
   display: flex;
+  background: #000000;
+  color: #ffffff;
+}
+
+.aboutinner {
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: 48px;
+  width: 100%;
+  max-width: 1080px;
+  padding: 40px 28px 48px;
 }
 
 .hello {
@@ -287,7 +295,7 @@ button {
 .abouttext {
   font-size: 16px;
   line-height: 1.85;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.72);
   max-width: 54ch;
   margin: 0;
 }
@@ -298,15 +306,15 @@ button {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--line);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   padding: 3px 8px;
   margin-bottom: 20px;
 }
 
 .scrollhint {
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.6);
   margin-top: 40px;
 }
 
@@ -348,6 +356,12 @@ button {
 .recordtable {
   width: 100%;
   border-collapse: collapse;
+}
+
+[id^="rec-"],
+.listtoolbar,
+#about {
+  scroll-margin-top: calc(var(--header) + 12px);
 }
 
 .recordtable th {
@@ -434,9 +448,9 @@ button {
 
 .stickers {
   position: relative;
-  height: 260px;
-  margin-top: 28px;
-  max-width: 440px;
+  height: 420px;
+  margin-top: 24px;
+  max-width: 620px;
   touch-action: none;
 }
 
@@ -446,28 +460,53 @@ button {
   left: 0;
   padding: 7px 12px;
   font-size: 14px;
-  color: var(--ink);
-  background: var(--page);
-  border: 1px solid var(--line);
-  box-shadow: 0 1px 2px rgba(23, 43, 49, 0.14);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: grab;
   user-select: none;
   touch-action: none;
   white-space: nowrap;
 }
 
-.sticker[data-wide="true"] {
-  width: 132px;
-  height: 96px;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  background: var(--zebra);
+/* Rectangular photo: white sticker frame. CSS cannot cut a subject out of a
+   photo, so a frame is the honest treatment for an image with a solid
+   background. */
+.sticker[data-image="true"] {
+  padding: 6px;
+  background: #ffffff;
+  border: 0;
+  line-height: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* True cutout: a transparent PNG gets an outline traced around its alpha
+   channel by stacked drop-shadows. Useless on a rectangle, correct once the
+   subject is actually cut out. */
+.sticker[data-cutout="true"] {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  filter:
+    drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff)
+    drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)
+    drop-shadow(0 8px 14px rgba(0, 0, 0, 0.6));
+}
+
+.sticker[data-image="true"] img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
 }
 
 .sticker[data-dragging="true"] {
   cursor: grabbing;
-  border-color: var(--link);
+}
+
+.sticker:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
 }
 
 .stickerreset {
@@ -475,11 +514,11 @@ button {
   bottom: 0;
   left: 0;
   font-size: 12px;
-  color: var(--link);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .stickerreset:hover {
-  text-decoration: underline;
+  color: #ffffff;
 }
 
 @media (hover: none) {
@@ -553,12 +592,92 @@ button {
     font-size: 42px;
   }
 
-  .colmeta {
+  .hidemobile {
     display: none;
   }
 
   .stickers {
-    height: 240px;
+    height: 320px;
     max-width: 100%;
+  }
+
+  .about {
+    margin: 0 -16px;
+    padding: 0 16px 40px;
+  }
+}
+
+/* form view — for applications holding a single record, the way the
+   platform opens one record rather than listing many */
+
+.formview {
+  border-bottom: 1px solid var(--line);
+  padding: 6px 0 18px;
+}
+
+.formgrid {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  max-width: 860px;
+}
+
+.formgrid dt {
+  padding: 9px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.formgrid dd {
+  padding: 9px 12px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+/* links panel — contact is links, not a table */
+
+.linkspanel {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 860px;
+}
+
+.linkspanel li {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.linkspanel li:hover {
+  background: var(--zebra);
+}
+
+.linkhandle {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.linknote {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .formgrid,
+  .linkspanel li {
+    grid-template-columns: 130px minmax(0, 1fr);
+  }
+
+  .linknote {
+    display: none;
   }
 }

@@ -1,22 +1,17 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { applications, about, profile, type Record } from "@/data/records";
+import { applications, about, profile, type Rec } from "@/data/records";
 import Clock from "./Clock";
 import Stickers from "./Stickers";
 
 const FAVE_KEY = "uthman-site:favourites";
 
-function matches(query: string, r: Record, appName: string) {
+function matches(query: string, r: Rec, appName: string) {
   if (!query) return true;
   const q = query.toLowerCase();
-  return (
-    r.name.toLowerCase().includes(q) ||
-    r.meta.toLowerCase().includes(q) ||
-    r.state.toLowerCase().includes(q) ||
-    r.year.includes(q) ||
-    appName.toLowerCase().includes(q)
-  );
+  const haystack = [r.name, appName, ...Object.values(r.fields)].join(" ").toLowerCase();
+  return haystack.includes(q);
 }
 
 function Star({ on, onClick, label }: { on: boolean; onClick: () => void; label: string }) {
@@ -49,7 +44,7 @@ export default function Shell() {
   const [faves, setFaves] = useState<string[]>([]);
   const [activeRecord, setActiveRecord] = useState<string>("about");
   const [activeApp, setActiveApp] = useState<string>("About");
-  const [dim, setDim] = useState(true);
+  const [activeAppId, setActiveAppId] = useState<string>("about");
   const [collapsed, setCollapsed] = useState<string[]>([]);
   const railRef = useRef<HTMLElement | null>(null);
 
@@ -68,13 +63,6 @@ export default function Shell() {
       } catch {}
       return next;
     });
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setDim(window.scrollY < 60);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const filtered = useMemo(
@@ -99,8 +87,9 @@ export default function Shell() {
         const el = top.target as HTMLElement;
         setActiveRecord(el.dataset.spy ?? "");
         setActiveApp(el.dataset.app ?? "");
+        setActiveAppId(el.dataset.appid ?? "about");
       },
-      { rootMargin: "-46px 0px -65% 0px", threshold: 0 }
+      { rootMargin: "-64px 0px -60% 0px", threshold: 0 }
     );
     nodes.forEach((n) => observer.observe(n));
     return () => observer.disconnect();
@@ -130,7 +119,7 @@ export default function Shell() {
         </div>
         <button
           className="pill"
-          onClick={() => jump(activeRecord === "about" ? "about" : `app-${activeApp.toLowerCase()}`)}
+          onClick={() => jump(activeAppId === "about" ? "about" : `app-${activeAppId}`)}
         >
           {activeApp || "About"}
         </button>
@@ -145,8 +134,6 @@ export default function Shell() {
       <nav
         className="rail"
         ref={railRef}
-        data-dim={dim && !query}
-        onMouseEnter={() => setDim(false)}
         aria-label="Modules"
       >
         <div className="filterwrap">
@@ -239,21 +226,23 @@ export default function Shell() {
       </nav>
 
       <main className="main">
-        <div className="inner">
           {aboutVisible && (
-            <section className="about" id="about" data-spy="about" data-app="About">
-              <span className="placeholdertag">placeholder copy</span>
-              <h1 className="hello">Hey, I&apos;m Uthman</h1>
-              {about.lines.map((line, i) => (
-                <p className="abouttext" key={i}>
-                  {line}
-                </p>
-              ))}
-              <Stickers />
-              <p className="scrollhint">scroll, or pick a module</p>
-            </section>
-          )}
+          <section className="about" id="about" data-spy="about" data-app="About" data-appid="about">
+            <div className="aboutinner">
+            <span className="placeholdertag">placeholder copy</span>
+            <h1 className="hello">Hey, I&apos;m Uthman</h1>
+            {about.lines.map((line, i) => (
+              <p className="abouttext" key={i}>
+                {line}
+              </p>
+            ))}
+            <Stickers />
+            <p className="scrollhint">scroll, or pick a module</p>
+            </div>
+          </section>
+        )}
 
+        <div className="inner">
           {filtered.map((app) => (
             <section key={app.id}>
               <div className="listtoolbar" id={`app-${app.id}`}>
@@ -263,40 +252,92 @@ export default function Shell() {
                 </span>
               </div>
               <div className="breadcrumb">All</div>
+              {app.view === "form" ? (
+                app.records.map((r) => (
+                  <div className="formview" key={r.id} id={`rec-${r.id}`} data-spy={r.id} data-app={app.name} data-appid={app.id}>
+                    <dl className="formgrid">
+                      {app.columns.map((c) => (
+                        <Fragment key={c.key}>
+                          <dt>{c.label}</dt>
+                          <dd>{c.key === "name" ? r.name : r.fields[c.key] || "—"}</dd>
+                        </Fragment>
+                      ))}
+                      {r.problem && (
+                        <>
+                          <dt>Notes</dt>
+                          <dd>{r.problem}</dd>
+                        </>
+                      )}
+                    </dl>
+                  </div>
+                ))
+              ) : app.view === "links" ? (
+                <ul className="linkspanel">
+                  {app.records.map((r) => (
+                    <li key={r.id} id={`rec-${r.id}`} data-spy={r.id} data-app={app.name} data-appid={app.id}>
+                      <a
+                        className="recname"
+                        href={r.href}
+                        target={r.href && r.href.startsWith("http") ? "_blank" : undefined}
+                        rel="noreferrer"
+                      >
+                        {r.name}
+                      </a>
+                      <span className="linkhandle">{r.fields.handle}</span>
+                      {r.fields.note && <span className="linknote">{r.fields.note}</span>}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
               <table className="recordtable">
                 <thead>
                   <tr>
-                    <th style={{ width: "26%" }}>Name</th>
-                    <th style={{ width: "14%" }}>State</th>
-                    <th className="colmeta">Stack</th>
-                    <th style={{ width: "10%" }}>Year</th>
+                    {app.columns.map((c) => (
+                      <th
+                        key={c.key}
+                        style={c.width ? { width: c.width } : undefined}
+                        className={c.hideOnMobile ? "hidemobile" : undefined}
+                      >
+                        {c.label}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {app.records.map((r, i) => (
                     <Fragment key={r.id}>
-                      <tr data-zebra={i % 2 === 1} id={`rec-${r.id}`} data-spy={r.id} data-app={app.name}>
-                        <td>
-                          {r.href ? (
-                            <a
-                              className="recname"
-                              href={r.href}
-                              target={r.href.startsWith("http") ? "_blank" : undefined}
-                              rel="noreferrer"
-                            >
-                              {r.name}
-                            </a>
-                          ) : (
-                            <span className="recname">{r.name}</span>
-                          )}
-                        </td>
-                        <td className="colstate">{r.state}</td>
-                        <td className="colmeta">{r.meta || "—"}</td>
-                        <td className="colyear">{r.year || "—"}</td>
+                      <tr
+                        data-zebra={i % 2 === 1}
+                        id={`rec-${r.id}`}
+                        data-spy={r.id}
+                        data-app={app.name}
+                        data-appid={app.id}
+                      >
+                        {app.columns.map((c) => {
+                          const value = c.key === "name" ? r.name : r.fields[c.key] ?? "—";
+                          return (
+                            <td key={c.key} className={c.hideOnMobile ? "hidemobile" : undefined}>
+                              {c.key === "name" && r.href ? (
+                                <a
+                                  className="recname"
+                                  href={r.href}
+                                  target={r.href.startsWith("http") ? "_blank" : undefined}
+                                  rel="noreferrer"
+                                >
+                                  {value}
+                                </a>
+                              ) : c.key === "name" ? (
+                                <span className="recname">{value}</span>
+                              ) : (
+                                value || "—"
+                              )}
+                            </td>
+                          );
+                        })}
                       </tr>
                       {(r.problem || r.built) && (
                         <tr data-zebra={i % 2 === 1}>
-                          <td colSpan={4}>
+                          <td colSpan={app.columns.length}>
                             <div className="detail">
                               {r.problem && <p>{r.problem}</p>}
                               {r.built && <p>{r.built}</p>}
@@ -309,6 +350,7 @@ export default function Shell() {
                   ))}
                 </tbody>
               </table>
+              )}
             </section>
           ))}
 
