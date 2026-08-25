@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/cad-quiz", "destination": "https://ibdotboss.github.io/cad-quiz/" },
+    { "source": "/cad-quiz/:path*", "destination": "https://ibdotboss.github.io/cad-quiz/:path*" },
+    { "source": "/servicenow-jobs-digest", "destination": "https://ibdotboss.github.io/servicenow-jobs-digest/" },
+    { "source": "/servicenow-jobs-digest/:path*", "destination": "https://ibdotboss.github.io/servicenow-jobs-digest/:path*" }
+  ]
+}
