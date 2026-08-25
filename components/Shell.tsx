@@ -6,6 +6,7 @@ import Clock from "./Clock";
 import Stickers, { type StickerFile } from "./Stickers";
 import Bismillah from "./Bismillah";
 import Disclaimer from "./Disclaimer";
+import Nameplate from "./Nameplate";
 import Chevron from "./Chevron";
 
 export type Shot = { src: string; width: number; height: number };
@@ -291,8 +292,7 @@ export default function Shell({
               <Bismillah />
               <div className="helloline">
                 <h1 className="hello">Hey, I&rsquo;m Ibrahim</h1>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="nameplate" src="/mr-faaja.webp" alt="Mr. Faaja" width={600} height={218} />
+                <Nameplate />
               </div>
               {about.lines.map((line, i) => (
                 <p className="abouttext" key={i}>

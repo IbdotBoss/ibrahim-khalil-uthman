@@ -106,7 +106,7 @@ button {
   height: var(--header);
   z-index: 30;
   display: grid;
-  grid-template-columns: var(--rail) 1fr auto;
+  grid-template-columns: var(--rail) 1fr;
   align-items: center;
   gap: 16px;
   padding-left: env(safe-area-inset-left);
@@ -127,7 +127,9 @@ button {
 }
 
 .pill {
-  justify-self: center;
+  position: absolute;
+  left: calc(var(--rail) + (100% - var(--rail)) / 2);
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -146,6 +148,7 @@ button {
 }
 
 .headmeta {
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -418,14 +421,41 @@ button.chev::after {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px 28px;
-  margin: 0 0 24px;
+  gap: 8px 24px;
+  /* Room above for the tilt, which lifts the plate's right corner into the
+     space the bismillah occupies. */
+  margin: 28px 0 24px;
 }
 
 .nameplate {
+  -webkit-tap-highlight-color: transparent;
+  flex: 0 0 auto;
+  padding: 12px 6px;
+  line-height: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.nameplate[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.nameplate:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.nameplatetilt {
+  display: block;
+  transform: rotate(-6deg);
+}
+
+.nameplatetilt img {
   width: 232px;
   height: auto;
   display: block;
+  pointer-events: none;
 }
 
 .hello {
@@ -813,7 +843,7 @@ a.shot:focus-visible {
     font-size: 42px;
   }
 
-  .nameplate {
+  .nameplatetilt img {
     width: 168px;
   }
 
