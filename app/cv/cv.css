@@ -147,3 +147,15 @@
     margin: 14mm;
   }
 }
+
+/* Label left, list right, so the areas form a column the eye can run down. */
+.cvskill {
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.cvskill .cvtitle {
+  flex: 0 0 96px;
+}

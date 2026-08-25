@@ -13,6 +13,7 @@ const contact = applications.find((a) => a.id === "contact")!;
 const experience = applications.find((a) => a.id === "experience")!;
 const certifications = applications.find((a) => a.id === "certifications")!;
 const education = applications.find((a) => a.id === "education")!;
+const skills = applications.find((a) => a.id === "skills")!;
 const projects = applications.find((a) => a.id === "projects")!;
 
 export default function CV() {
@@ -65,6 +66,16 @@ export default function CV() {
             </div>
             {r.built && <ul><li>{r.built}</li></ul>}
           </article>
+        ))}
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        {skills.records.map((r) => (
+          <div className="cvrow cvskill" key={r.id}>
+            <span className="cvtitle">{r.name}</span>
+            <span>{r.fields.value}</span>
+          </div>
         ))}
       </section>
 

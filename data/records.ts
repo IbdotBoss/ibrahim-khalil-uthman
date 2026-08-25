@@ -13,6 +13,9 @@ export type Rec = {
   repo?: string;
   /** Chosen for the CV. The CV is the edited record, the site is the full one. */
   onCv?: boolean;
+  /** One line for the site's table. problem and built stay the CV's bullets, so
+      the two pages say different things rather than the same thing twice. */
+  brief?: string;
   /** Basename in public/shots. The screenshot links to href, same as the name. */
   shot?: string;
 };
@@ -53,6 +56,8 @@ export const applications: Application[] = [
     records: [
       {
         id: "sn-developer",
+        brief:
+          "Automation and integration on the platform: Business Rules, Client Scripts, REST APIs out to other systems, and custom applications built to order.",
         name: "ServiceNow Developer",
         fields: {
           company: "Doublelight Technology",
@@ -67,6 +72,8 @@ export const applications: Application[] = [
       },
       {
         id: "sn-admin",
+        brief:
+          "Roles, groups, ACLs and security policy across the platform environments, plus CMDB integrity, form and dashboard configuration, and Tier-2 support.",
         name: "ServiceNow Administrator",
         fields: {
           company: "Doublelight Technology",
@@ -81,6 +88,8 @@ export const applications: Application[] = [
       },
       {
         id: "asset-manager",
+        brief:
+          "The full lifecycle of hardware and software licences, from allocation and audit through to compliant decommissioning.",
         name: "Hardware & Software Asset Manager",
         fields: {
           company: "Doublelight Technology",
@@ -95,8 +104,10 @@ export const applications: Application[] = [
       },
       {
         id: "hardware-asset",
+        brief:
+          "Physical asset tracking through onboarding and offboarding, keeping the central inventory accurate and coordinating refresh cycles with other departments.",
         name: "Hardware Asset Manager",
-        fields: { company: "Innovastra", type: "Internship", period: "Jul — Dec 2023" },
+        fields: { company: "Innovastra", type: "Full-time", period: "Jul — Dec 2023" },
         siteDetail: false,
         problem:
           "Tracked physical IT assets, hardware distribution and device reclamation through employee onboarding and offboarding.",
@@ -105,13 +116,58 @@ export const applications: Application[] = [
       },
       {
         id: "data-entry",
+        brief:
+          "High-volume operational and asset records, audited in Excel to catch inconsistencies and duplicates.",
         name: "Data Entry Specialist",
-        fields: { company: "Innovastra", type: "On-site", period: "May — Jul 2023" },
+        fields: { company: "Innovastra", type: "Full-time", period: "May — Jul 2023" },
         siteDetail: false,
         problem:
           "Entered and verified high volumes of operational and asset records into company databases.",
         built:
           "Ran routine auditing in Excel to find and correct inconsistencies and duplicates across those records.",
+      },
+    ],
+  },
+  {
+    id: "skills",
+    name: "Skills",
+    columns: [
+      { key: "name", label: "Area", width: "26%" },
+      { key: "value", label: "Detail" },
+    ],
+    records: [
+      {
+        id: "sk-servicenow",
+        name: "ServiceNow",
+        fields: {
+          value:
+            "Business Rules, Client Scripts, Flow Designer, Service Catalog, REST integrations, ACLs and role governance, CMDB, reporting and dashboards.",
+        },
+      },
+      {
+        id: "sk-languages",
+        name: "Languages",
+        fields: { value: "JavaScript, TypeScript, Python, Java" },
+      },
+      {
+        id: "sk-frontend",
+        name: "Frontend",
+        fields: { value: "React, Next.js, React Native, Tailwind CSS" },
+      },
+      {
+        id: "sk-backend",
+        name: "Backend",
+        fields: { value: "Node.js, Express, Flask" },
+      },
+      {
+        id: "sk-data",
+        name: "Data",
+        fields: { value: "PostgreSQL, MongoDB, SQLite, advanced Excel" },
+      },
+      {
+        id: "sk-tools",
+        name: "Tools",
+        fields: { value: "Git, Docker, AWS, CI/CD, NGINX, Vercel" },
       },
     ],
   },

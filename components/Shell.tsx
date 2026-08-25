@@ -404,12 +404,18 @@ export default function Shell({
                             );
                           })}
                         </tr>
-                        {(r.problem || r.built) && r.siteDetail !== false && (
+                        {(r.brief || ((r.problem || r.built) && r.siteDetail !== false)) && (
                           <tr data-zebra={i % 2 === 1}>
                             <td colSpan={app.columns.length}>
                               <div className="detail">
-                                {r.problem && <p>{r.problem}</p>}
-                                {r.built && <p>{r.built}</p>}
+                                {r.brief ? (
+                                  <p>{r.brief}</p>
+                                ) : (
+                                  <>
+                                    {r.problem && <p>{r.problem}</p>}
+                                    {r.built && <p>{r.built}</p>}
+                                  </>
+                                )}
                                 {(() => {
                                   const shot = r.shot ? shots[r.shot] : undefined;
                                   if (!shot && !r.href && !r.repo) return null;
