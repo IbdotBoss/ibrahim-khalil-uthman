@@ -129,11 +129,18 @@ export default function Shell({
     [jump]
   );
 
-  const favedRecords = applications
-    .flatMap((a) => a.records.map((r) => ({ r, app: a })))
-    .filter(({ r }) => faves.includes(r.id));
+  const favedRecords = useMemo(
+    () =>
+      applications
+        .flatMap((a) => a.records.map((r) => ({ r, app: a })))
+        .filter(({ r }) => faves.includes(r.id)),
+    [faves]
+  );
 
-  const favedMatches = favedRecords.filter(({ r, app }) => matches(query, r, app.name));
+  const favedMatches = useMemo(
+    () => favedRecords.filter(({ r, app }) => matches(query, r, app.name)),
+    [favedRecords, query]
+  );
 
   const isOpen = (id: string) => Boolean(query) || !collapsed.includes(id);
   const toggleApp = (id: string) =>

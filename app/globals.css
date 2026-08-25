@@ -533,15 +533,14 @@ a.recname:hover {
   text-decoration: underline;
 }
 
-.colstate,
-.colmeta,
-.colyear {
-  color: var(--ink);
-  white-space: nowrap;
+/* Periods, years and counts line up in a column; the description rows below
+   them are running text and should keep proportional figures. */
+.recordtable tbody td {
+  font-variant-numeric: tabular-nums;
 }
 
-.colyear {
-  font-variant-numeric: tabular-nums;
+.detail {
+  font-variant-numeric: normal;
 }
 
 /* The cell already supplies the 16px gutter. A second one indented every
@@ -601,15 +600,6 @@ a.shot:focus-visible {
 }
 
 .projlinks a:hover {
-  text-decoration: underline;
-}
-
-.detaillink {
-  color: var(--link);
-  font-size: 14px;
-}
-
-.detaillink:hover {
   text-decoration: underline;
 }
 

@@ -29,7 +29,7 @@ export default function CV() {
           {contact.records
             .filter((r) => r.id !== "cv")
             .map((r) => r.fields.handle)
-            .join("  ·  ")}
+            .join("  ·  ")}
         </p>
       </header>
 
