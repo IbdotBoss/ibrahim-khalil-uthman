@@ -289,7 +289,11 @@ export default function Shell({
           <section className="about" id="about" data-spy="about" data-app="About" data-appid="about">
             <div className="aboutinner">
               <Bismillah />
-              <h1 className="hello">Hey, I&rsquo;m Ibrahim</h1>
+              <div className="helloline">
+                <h1 className="hello">Hey, I&rsquo;m Ibrahim</h1>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="nameplate" src="/mr-faaja.webp" alt="Mr. Faaja" width={600} height={218} />
+              </div>
               {about.lines.map((line, i) => (
                 <p className="abouttext" key={i}>
                   {line}

@@ -10,7 +10,10 @@ const lato = Lato({
   display: "swap",
 });
 
-const TITLE = "Ibrahim Uthman";
+// The tab and the home screen say Mr. Faaja; the page itself, the wordmark and
+// the CV all still say the name a recruiter is searching for.
+const TITLE = "Mr. Faaja";
+const NAME = "Ibrahim Uthman";
 const DESCRIPTION = "ServiceNow Developer. Problem solver. Always learning.";
 
 export const metadata: Metadata = {
@@ -21,8 +24,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: TITLE,
-    title: TITLE,
+    siteName: NAME,
+    title: NAME,
     description: DESCRIPTION,
     locale: "en_GB",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Ibrahim Khalil Uthman, ServiceNow Developer" }],
@@ -31,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@IbdotBoss",
     creator: "@IbdotBoss",
-    title: TITLE,
+    title: NAME,
     description: DESCRIPTION,
     images: ["/og.png"],
   },

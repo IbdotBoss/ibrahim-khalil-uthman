@@ -386,7 +386,8 @@ button.chev::after {
 }
 
 .inner {
-  max-width: 1080px;
+  max-width: 1280px;
+  margin: 0 auto;
   padding: 0 0 30vh;
 }
 
@@ -407,9 +408,24 @@ button.chev::after {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  max-width: 1080px;
+  max-width: 1280px;
+  margin: 0 auto;
   /* 16px, the same gutter the toolbars, tables and link rows sit on. */
   padding: 40px 16px 48px;
+}
+
+.helloline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 0 0 24px;
+}
+
+.nameplate {
+  width: 232px;
+  height: auto;
+  display: block;
 }
 
 .hello {
@@ -418,7 +434,7 @@ button.chev::after {
   font-weight: 700;
   letter-spacing: -0.035em;
   text-wrap: balance;
-  margin: 0 0 24px;
+  margin: 0;
 }
 
 .abouttext {
@@ -580,7 +596,7 @@ a.recname:hover {
 /* Evidence: the screenshot and where it goes. 860px matches the form grid, so
    the widest thing on a record is one number rather than two. */
 .evidence {
-  max-width: 860px;
+  max-width: 100%;
   margin-top: 12px;
 }
 
@@ -795,6 +811,10 @@ a.shot:focus-visible {
 
   .hello {
     font-size: 42px;
+  }
+
+  .nameplate {
+    width: 168px;
   }
 
   .hidemobile {
