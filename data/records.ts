@@ -11,6 +11,8 @@ export type Rec = {
   siteDetail?: boolean;
   /** Public source. Separate from href, which is where the thing actually runs. */
   repo?: string;
+  /** Chosen for the CV. The CV is the edited record, the site is the full one. */
+  onCv?: boolean;
   /** Basename in public/shots. The screenshot links to href, same as the name. */
   shot?: string;
 };
@@ -95,11 +97,21 @@ export const applications: Application[] = [
         id: "hardware-asset",
         name: "Hardware Asset Manager",
         fields: { company: "Innovastra", type: "Internship", period: "Jul — Dec 2023" },
+        siteDetail: false,
+        problem:
+          "Tracked physical IT assets, hardware distribution and device reclamation through employee onboarding and offboarding.",
+        built:
+          "Kept centralised inventory records accurate to minimise loss, and coordinated hardware refresh cycles and physical storage with other departments.",
       },
       {
         id: "data-entry",
         name: "Data Entry Specialist",
         fields: { company: "Innovastra", type: "On-site", period: "May — Jul 2023" },
+        siteDetail: false,
+        problem:
+          "Entered and verified high volumes of operational and asset records into company databases.",
+        built:
+          "Ran routine auditing in Excel to find and correct inconsistencies and duplicates across those records.",
       },
     ],
   },
@@ -166,6 +178,7 @@ export const applications: Application[] = [
     records: [
       {
         id: "servicenow-jobs-digest",
+        onCv: true,
         name: "ServiceNow Jobs Digest",
         href: "https://ibdotboss.github.io/servicenow-jobs-digest/",
         repo: "https://github.com/IbdotBoss/servicenow-jobs-digest",
@@ -178,6 +191,7 @@ export const applications: Application[] = [
       },
       {
         id: "cad-quiz",
+        onCv: true,
         name: "CAD Quiz",
         href: "https://ibdotboss.github.io/cad-quiz/",
         repo: "https://github.com/IbdotBoss/cad-quiz",
@@ -199,6 +213,7 @@ export const applications: Application[] = [
       },
       {
         id: "wallet-talk",
+        onCv: true,
         name: "Wallet Talk",
         href: "https://wallet-talk.vercel.app/",
         repo: "https://github.com/IbdotBoss/wallet-talk",

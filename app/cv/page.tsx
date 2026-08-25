@@ -57,7 +57,7 @@ export default function CV() {
 
       <section>
         <h2>Projects</h2>
-        {projects.records.slice(0, 4).map((r) => (
+        {projects.records.filter((r) => r.onCv).map((r) => (
           <article className="cventry" key={r.id}>
             <div className="cvrow">
               <span className="cvtitle">{r.name}</span>
