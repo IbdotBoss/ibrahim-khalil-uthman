@@ -42,6 +42,7 @@ const PLACED: Record<string, { label: string; w: number; x: number; y: number; r
   money: { label: "money", w: 160, x: 362, y: 396, rotate: 6 },
   basketball: { label: "ball", w: 170, x: 552, y: 404, rotate: -5 },
   cat: { label: "the cat", w: 85, x: 782, y: 392, rotate: 5 },
+  batman: { label: "Batman", w: 145, x: 890, y: 430, rotate: -4 },
 };
 
 // A phone pane is about a third of the authored width, so scaling the desktop
@@ -69,6 +70,8 @@ const PLACED_NARROW: Record<string, { w: number; x: number; y: number; rotate: n
   money: { w: 104, x: 14, y: 532, rotate: 6 },
   basketball: { w: 116, x: 140, y: 540, rotate: -5 },
   cat: { w: 70, x: 286, y: 524, rotate: 5 },
+
+  batman: { w: 132, x: 124, y: 676, rotate: -4 },
 };
 
 const RING = [
@@ -102,7 +105,7 @@ function build(files: StickerFile[], narrow: boolean): Sticker[] {
   });
 }
 
-const STAGE = { wide: { w: 1050, h: 620 }, narrow: { w: 380, h: 720 } };
+const STAGE = { wide: { w: 1050, h: 620 }, narrow: { w: 380, h: 790 } };
 
 /** Below this the wide collage would scale under 0.6 and stop being readable. */
 const NARROW_AT = 620;
