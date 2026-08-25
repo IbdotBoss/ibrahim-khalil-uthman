@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
+import { SITE } from "./site";
 import "./globals.css";
 
 const lato = Lato({
@@ -9,7 +10,6 @@ const lato = Lato({
   display: "swap",
 });
 
-const SITE = "https://ibrahim-khalil-uthman.vercel.app";
 const TITLE = "Ibrahim Uthman";
 const DESCRIPTION = "ServiceNow Developer. Problem solver. Always learning.";
 
