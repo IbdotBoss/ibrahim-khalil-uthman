@@ -186,13 +186,15 @@ button {
 .filter {
   width: 100%;
   height: 32px;
-  padding: 0 12px;
+  padding: 0 12px 0 40px;
   font-family: inherit;
   font-size: 16px;
   color: var(--rail-ink);
-  background: var(--filter-bg);
-  border: 0;
-  border-radius: 2px;
+  background: var(--filter-bg)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath d='M1.5 2h13a.5.5 0 0 1 .38.83L10 8.4V13a.5.5 0 0 1-.24.43l-3 1.8A.5.5 0 0 1 6 14.8V8.4L1.12 2.83A.5.5 0 0 1 1.5 2'/%3E%3C/svg%3E")
+    no-repeat 14px 50% / 16px 16px;
+  border: 1px solid var(--rail-bg);
+  border-radius: 4px;
 }
 
 .filter::placeholder {
@@ -212,7 +214,6 @@ button {
   min-height: var(--row);
   padding: 4px 12px 4px 16px;
   font-size: 16px;
-  font-weight: 700;
 }
 
 /* Only rows that actually go somewhere light up. The Favorites heading is the
@@ -272,11 +273,13 @@ button.chev::after {
   align-items: center;
   text-align: left;
   font-size: 16px;
-  font-weight: 700;
+  line-height: 20px;
 }
 
+/* The line falls on the chevron's centre, and a module's label lines up with
+   the label of the group it belongs to. */
 .modules {
-  margin-left: 20px;
+  margin-left: 25px;
   border-left: 1px solid rgba(255, 255, 255, 0.22);
 }
 
@@ -287,10 +290,10 @@ button.chev::after {
   gap: 8px;
   width: 100%;
   min-height: var(--row);
-  padding: 4px 12px 4px 14px;
+  padding: 4px 12px 4px 16px;
   font-size: 16px;
-  line-height: 1.3;
-  color: var(--rail-ink);
+  line-height: 20px;
+  color: var(--rail-muted);
   text-align: left;
 }
 
@@ -307,8 +310,7 @@ button.chev::after {
 }
 
 .module[data-active="true"] {
-  background: rgba(255, 255, 255, 0.12);
-  font-weight: 700;
+  color: var(--rail-ink);
 }
 
 /* Two rail labels wrap to two lines, so the star cannot simply be centred in
@@ -384,6 +386,7 @@ button.chev::after {
 }
 
 .inner {
+  max-width: 1080px;
   padding: 0 0 30vh;
 }
 

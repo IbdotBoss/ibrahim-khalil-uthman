@@ -129,49 +129,6 @@ export const applications: Application[] = [
     ],
   },
   {
-    id: "skills",
-    name: "Skills",
-    columns: [
-      { key: "name", label: "Area", width: "26%" },
-      { key: "value", label: "Detail" },
-    ],
-    records: [
-      {
-        id: "sk-servicenow",
-        name: "ServiceNow",
-        fields: {
-          value:
-            "Business Rules, Client Scripts, Flow Designer, Service Catalog, REST integrations, ACLs and role governance, CMDB, reporting and dashboards.",
-        },
-      },
-      {
-        id: "sk-languages",
-        name: "Languages",
-        fields: { value: "JavaScript, TypeScript, Python, Java" },
-      },
-      {
-        id: "sk-frontend",
-        name: "Frontend",
-        fields: { value: "React, Next.js, React Native, Tailwind CSS" },
-      },
-      {
-        id: "sk-backend",
-        name: "Backend",
-        fields: { value: "Node.js, Express, Flask" },
-      },
-      {
-        id: "sk-data",
-        name: "Data",
-        fields: { value: "PostgreSQL, MongoDB, SQLite, advanced Excel" },
-      },
-      {
-        id: "sk-tools",
-        name: "Tools",
-        fields: { value: "Git, Docker, AWS, CI/CD, NGINX, Vercel" },
-      },
-    ],
-  },
-  {
     id: "certifications",
     name: "Certifications",
     columns: [
@@ -219,6 +176,49 @@ export const applications: Application[] = [
         },
         problem:
           "Modules: algorithm analysis and data structures, software engineering, computer systems, digital security.",
+      },
+    ],
+  },
+  {
+    id: "skills",
+    name: "Skills",
+    columns: [
+      { key: "name", label: "Area", width: "26%" },
+      { key: "value", label: "Detail" },
+    ],
+    records: [
+      {
+        id: "sk-servicenow",
+        name: "ServiceNow",
+        fields: {
+          value:
+            "Business Rules, Client Scripts, Flow Designer, Service Catalog, REST integrations, ACLs and role governance, CMDB, reporting and dashboards.",
+        },
+      },
+      {
+        id: "sk-languages",
+        name: "Languages",
+        fields: { value: "JavaScript, TypeScript, Python, Java" },
+      },
+      {
+        id: "sk-frontend",
+        name: "Frontend",
+        fields: { value: "React, Next.js, React Native, Tailwind CSS" },
+      },
+      {
+        id: "sk-backend",
+        name: "Backend",
+        fields: { value: "Node.js, Express, Flask" },
+      },
+      {
+        id: "sk-data",
+        name: "Data",
+        fields: { value: "PostgreSQL, MongoDB, SQLite, advanced Excel" },
+      },
+      {
+        id: "sk-tools",
+        name: "Tools",
+        fields: { value: "Git, Docker, AWS, CI/CD, NGINX, Vercel" },
       },
     ],
   },
