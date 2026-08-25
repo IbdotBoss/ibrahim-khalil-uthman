@@ -589,6 +589,7 @@ button.chev::after {
   display: inline-block;
   padding-block: 4px;
   margin-block: -4px;
+  overflow-wrap: anywhere;
   color: var(--link);
 }
 
@@ -892,6 +893,7 @@ a.shot:focus-visible {
   padding: 9px 12px;
   margin: 0;
   font-size: 14px;
+  overflow-wrap: anywhere;
   color: var(--ink);
   border-bottom: 1px solid var(--line);
 }
@@ -919,6 +921,7 @@ a.shot:focus-visible {
 
 .linkhandle {
   font-size: 14px;
+  overflow-wrap: anywhere;
   color: var(--ink);
 }
 
