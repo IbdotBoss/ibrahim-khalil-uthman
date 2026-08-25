@@ -808,42 +808,26 @@ a.shot:focus-visible {
     display: none;
   }
 
-  /* Wrapping rather than scrolling. A scrolling row needs a scrollbar to say
-     there is more to the right, and that bar is the one thing on this page that
-     scrolls sideways. Wrapping costs a little height and removes it entirely. */
   .railrow {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2px 4px;
+    gap: 4px;
+    overflow-x: auto;
     padding: 0 12px;
+    scroll-padding-inline: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
   }
 
   .railrow .appblock {
     flex: 0 0 auto;
   }
 
-  /* Smaller than the 16px the instance uses in its vertical rail, because these
-     are wrapping chips rather than stacked rows and every saved pixel is one
-     fewer line of navigation sitting on top of the page. */
   .railrow .appname {
     width: auto;
-    padding: 4px 10px;
     white-space: nowrap;
   }
 
-  .railrow .appjump,
-  .railrow .appjumpstatic {
-    font-size: 14px;
-  }
-
   .railrow .chev {
-    display: none;
-  }
-
-  /* The favourites list is hidden at this width, so a star here marks something
-     that cannot then be navigated to. Dropping it also takes ~32px off every
-     chip, which is a whole row of navigation off the top of the page. */
-  .railrow .star {
     display: none;
   }
 
