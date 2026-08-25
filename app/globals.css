@@ -695,13 +695,16 @@ a.shot:focus-visible {
    in flow this 1050px-wide div would widen the page at every smaller size.
 
    Size and scale arrive as inline styles. See .stickerfit above for why they
-   are not computed in CSS. */
+   are not computed in CSS.
+
+   No touch-action here. The stage is mostly empty black, and claiming touches
+   on it meant a finger landing between two stickers could not scroll the page.
+   Each sticker sets touch-action itself, which is where the drag actually is. */
 .stickers {
   position: absolute;
   top: 0;
   left: 0;
   transform-origin: top left;
-  touch-action: none;
 }
 
 .sticker {
@@ -731,10 +734,20 @@ a.shot:focus-visible {
   padding: 0;
   background: none;
   box-shadow: none;
+}
+
+.sticker[data-cutout="true"] img {
   filter:
     drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff)
     drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)
     drop-shadow(0 8px 14px rgba(0, 0, 0, 0.6));
+}
+
+.sticker[data-dragging="true"],
+.disclaimer[data-dragging="true"],
+.nameplate[data-dragging="true"],
+.bismillah[data-dragging="true"] {
+  will-change: transform;
 }
 
 .sticker[data-dragging="true"] {
