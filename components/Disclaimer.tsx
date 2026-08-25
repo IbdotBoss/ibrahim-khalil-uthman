@@ -6,7 +6,7 @@ import { useDraggable } from "./useDraggable";
 export default function Disclaimer({ text }: { text: string }) {
   const { bind } = useDraggable();
   return (
-    <div className="disclaimer" aria-label="Disclaimer, drag or use arrow keys to move" {...bind}>
+    <div className="disclaimer" {...bind}>
       <span className="disclaimerpill">
         <span className="disclaimericon" aria-hidden="true">!</span>
         Disclaimer!

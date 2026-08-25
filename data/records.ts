@@ -9,7 +9,10 @@ export type Rec = {
   built?: string;
   /** false = keep the detail for the CV but do not print it on the site list */
   siteDetail?: boolean;
-  rich?: boolean;
+  /** Public source. Separate from href, which is where the thing actually runs. */
+  repo?: string;
+  /** Basename in public/shots. The screenshot links to href, same as the name. */
+  shot?: string;
 };
 
 export type Application = {
@@ -30,7 +33,7 @@ export const about = {
   id: "about",
   name: "About",
   lines: [
-    "Let's tinker and figure things out. I do my best work alongside others, whether I'm untangling a tricky problem or building something from scratch.",
+    "Let’s tinker and figure things out. I do my best work alongside others, whether I’m untangling a tricky problem or building something from scratch.",
   ],
   caution: "This user is not a fan of good enough.",
 };
@@ -164,53 +167,64 @@ export const applications: Application[] = [
       {
         id: "servicenow-jobs-digest",
         name: "servicenow jobs digest",
+        href: "https://ibdotboss.github.io/servicenow-jobs-digest/",
+        repo: "https://github.com/IbdotBoss/servicenow-jobs-digest",
+        shot: "servicenow-jobs-digest",
         fields: { state: "active", stack: "Python", year: "2026" },
         problem:
           "UK ServiceNow roles are scattered across five job boards, and most listings hide whether the company can sponsor.",
         built:
           "A daily aggregator across JobServe, LinkedIn, ServiceNow Careers, Nelson Frank and Hunt UK. No algorithm ever claims sponsorship is verified. The licenced flag says the company can sponsor and the reader decides about the role.",
-        rich: true,
       },
       {
         id: "cad-quiz",
         name: "cad quiz",
         href: "https://ibdotboss.github.io/cad-quiz/",
+        repo: "https://github.com/IbdotBoss/cad-quiz",
+        shot: "cad-quiz",
         fields: { state: "shipped", stack: "JavaScript · GitHub Pages", year: "2026" },
         problem:
           "Every CAD practice bank online is scraped from exam dumps, and a wrong answer taught confidently is worse than no answer.",
         built:
-          "282 questions with every answer adjudicated against ServiceNow's own documentation rather than practice sites. The audit found real errors, including a claim that GlideRecord is unavailable client side. Items that could not be settled say so instead of asserting.",
-        rich: true,
+          "282 questions with every answer adjudicated against ServiceNow’s own documentation rather than practice sites. The audit found real errors, including a claim that GlideRecord is unavailable client side. Items that could not be settled say so instead of asserting.",
       },
       {
         id: "curate",
         name: "curate",
+        shot: "curate",
         fields: { state: "active", stack: "Next.js · SQLite", year: "2026" },
         problem: "Mass applying produces a hundred weak applications. The bottleneck is evidence, not volume.",
         built:
           "One job listing and one verified profile become one defensible application package. Every claim traces to something in the profile or it does not ship.",
-        rich: true,
       },
       {
         id: "wallet-talk",
         name: "wallet talk",
+        href: "https://wallet-talk.vercel.app/",
+        repo: "https://github.com/IbdotBoss/wallet-talk",
+        shot: "wallet-talk",
         fields: { state: "shipped", stack: "Next.js · XMTP · Privy", year: "2026" },
         problem: "End-to-end encrypted wallet-to-wallet messaging, with no database and no server-held history.",
         built:
           "Peer to peer over XMTP with network-level history sync. Traced a P0 crash to infinite recursion in a custom logger after minification renamed the object, and fixed a stream leak creating a client per session. 39 passing unit tests.",
-        rich: true,
       },
       {
         id: "nansta",
         name: "nansta",
+        href: "https://nansta-next.vercel.app/",
+        repo: "https://github.com/IbdotBoss/nansta",
+        shot: "nansta",
         fields: { state: "shipped", stack: "Next.js · Python · Flask", year: "2026" },
         problem: "Wanted to understand how capital actually moves across chains.",
         built:
-          "DeFi analytics across Ethereum, Solana, Base and Arbitrum via the Nansen API. A three-phase pipeline with a custom client that handles each endpoint's quirks, plus weekly reports delivered to Discord.",
+          "DeFi analytics across Ethereum, Solana, Base and Arbitrum via the Nansen API. A three-phase pipeline with a custom client that handles each endpoint’s quirks, plus weekly reports delivered to Discord.",
       },
       {
         id: "lunar-shift",
         name: "lunar shift",
+        href: "https://lunar-shift.vercel.app/",
+        repo: "https://github.com/IbdotBoss/lunar-shift",
+        shot: "lunar-shift",
         fields: { state: "shipped", stack: "Next.js · satori", year: "2026" },
         problem: "Converting Gregorian birthdays to Hijri dates, fast enough to feel instant.",
         built:
@@ -219,11 +233,14 @@ export const applications: Application[] = [
       {
         id: "faja",
         name: "faja",
+        href: "https://faja-builds.vercel.app/",
+        repo: "https://github.com/IbdotBoss/faja-site",
+        shot: "faja",
         fields: { state: "shipped", stack: "Next.js · GSAP", year: "2026" },
-        problem: "An agency site where the motion had to feel deliberate rather than decorative.",
+        problem:
+          "faja is a digital agency. We build websites, apps, automation, and AI agents for small businesses and solopreneurs.",
         built:
-          "Everything is held before it moves. No bounce, no spring, no elastic return. A one pixel horizontal band snaps on viewport enter and retracts on scroll out.",
-        rich: true,
+          "Three layers, one idea: we pull everything to its absolute limit so your business can operate beyond its own.",
       },
     ],
   },
@@ -254,6 +271,12 @@ export const applications: Application[] = [
         name: "GitHub",
         href: "https://github.com/IbdotBoss",
         fields: { handle: "IbdotBoss", note: "" },
+      },
+      {
+        id: "x",
+        name: "X",
+        href: "https://x.com/IbdotBoss",
+        fields: { handle: "@IbdotBoss", note: "" },
       },
       {
         id: "cv",

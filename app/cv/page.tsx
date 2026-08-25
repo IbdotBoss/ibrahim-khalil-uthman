@@ -6,6 +6,7 @@ import "./cv.css";
 export const metadata: Metadata = {
   title: "Ibrahim Uthman — CV",
   description: "ServiceNow Developer. CSA and CAD certified.",
+  alternates: { canonical: "/cv" },
 };
 
 const contact = applications.find((a) => a.id === "contact")!;
@@ -96,7 +97,7 @@ export default function CV() {
       </div>
 
       <p className="cvprint">
-        This page prints clean. Use your browser's print dialogue and save as PDF.
+        This page prints clean. Use your browser’s print dialogue and save as PDF.
       </p>
     </main>
   );

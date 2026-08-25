@@ -26,6 +26,12 @@
   box-sizing: border-box;
 }
 
+html {
+  /* Set deliberately rather than left to the platform blue flash. The
+     draggables opt out below: there the drag itself is the feedback. */
+  -webkit-tap-highlight-color: rgba(0, 104, 132, 0.15);
+}
+
 html,
 body {
   margin: 0;
@@ -57,6 +63,41 @@ button {
   outline-offset: 1px;
 }
 
+/* The skip link target takes focus programmatically; it should not then draw
+   a ring around the whole page. */
+.main:focus {
+  outline: none;
+}
+
+.visuallyhidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skiplink {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 40;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--rail-ink);
+  background: var(--link);
+  border-radius: 2px;
+  transform: translateY(-200%);
+}
+
+.skiplink:focus {
+  transform: none;
+}
+
 /* header */
 
 .header {
@@ -68,7 +109,8 @@ button {
   grid-template-columns: var(--rail) 1fr auto;
   align-items: center;
   gap: 16px;
-  padding-right: 20px;
+  padding-left: env(safe-area-inset-left);
+  padding-right: max(20px, env(safe-area-inset-right));
   background: var(--header-bg);
   color: var(--rail-ink);
 }
@@ -134,7 +176,7 @@ button {
   background: var(--rail-bg);
   color: var(--rail-ink);
   padding: 16px 0 48px;
-  transition: opacity 220ms ease;
+  padding-left: env(safe-area-inset-left);
 }
 
 .filterwrap {
@@ -157,29 +199,45 @@ button {
   color: rgba(255, 255, 255, 0.85);
 }
 
+.filter::-webkit-search-cancel-button {
+  filter: invert(1);
+  cursor: pointer;
+}
+
 .appname {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
   min-height: var(--row);
-  padding: 6px 12px 6px 16px;
+  padding: 4px 12px 4px 16px;
   font-size: 16px;
   font-weight: 700;
 }
 
-.appname:hover {
+/* Only rows that actually go somewhere light up. The Favorites heading is the
+   same shape but is not a control. */
+.appname:has(a):hover {
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* Matches the instance: 18px box, 16px glyph, label starting 8px after it. */
+/* Matches the instance: 18px box, 16px glyph, label starting 8px after it.
+   The visible box stays 18px; the pseudo-element takes the pointer target to
+   the 24px minimum without moving anything. */
 .chev {
+  position: relative;
   width: 18px;
   height: 18px;
   flex: 0 0 18px;
   display: grid;
   place-items: center;
   color: var(--rail-ink);
+}
+
+button.chev::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
 }
 
 .chevbox {
@@ -198,13 +256,20 @@ button {
   display: block;
 }
 
-.chev:disabled {
+/* aria-disabled rather than disabled: a disabled button is not focusable, so
+   the explanation of why it is locked would never be read. */
+.chev[aria-disabled="true"] {
   opacity: 0.4;
   cursor: default;
 }
 
-.appjump {
+.appjump,
+.appjumpstatic {
   flex: 1 1 auto;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
   text-align: left;
   font-size: 16px;
   font-weight: 700;
@@ -222,11 +287,19 @@ button {
   gap: 8px;
   width: 100%;
   min-height: var(--row);
-  padding: 6px 12px 6px 14px;
+  padding: 4px 12px 4px 14px;
   font-size: 16px;
   line-height: 1.3;
   color: var(--rail-ink);
   text-align: left;
+}
+
+.modulelink {
+  flex: 1 1 auto;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
 }
 
 .module:hover {
@@ -239,6 +312,7 @@ button {
 }
 
 .star {
+  position: relative;
   flex: 0 0 auto;
   align-self: flex-start;
   margin-top: 2px;
@@ -249,8 +323,19 @@ button {
   transition: opacity 120ms ease;
 }
 
+.star::after {
+  content: "";
+  position: absolute;
+  inset: -5px -6px;
+}
+
+/* focus-within matters as much as hover: without it, tabbing to a star draws
+   a ring around an invisible glyph. */
 .appname:hover .star,
 .module:hover .star,
+.appname:focus-within .star,
+.module:focus-within .star,
+.star:focus-visible,
 .star[data-on="true"] {
   opacity: 1;
 }
@@ -273,8 +358,13 @@ button {
 .main {
   margin-left: var(--rail);
   padding-top: var(--header);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   background: var(--page);
   min-height: 100vh;
+  /* dvh, so the mobile URL bar collapsing does not push the scroll hint below
+     the fold on the one screen that is meant to fit a screen. */
+  min-height: 100dvh;
 }
 
 .inner {
@@ -283,6 +373,11 @@ button {
 
 .about {
   min-height: calc(100vh - var(--header));
+  min-height: calc(100dvh - var(--header));
+  /* The one boundary on this screen, and a visible one. Everything draggable
+     is free to move anywhere inside the black panel and nothing can escape it
+     to widen the document. clip rather than hidden: no scroll container. */
+  overflow: clip;
   display: flex;
   background: #000000;
   color: #ffffff;
@@ -294,7 +389,8 @@ button {
   justify-content: center;
   width: 100%;
   max-width: 1080px;
-  padding: 40px 28px 48px;
+  /* 16px, the same gutter the toolbars, tables and link rows sit on. */
+  padding: 40px 16px 48px;
 }
 
 .hello {
@@ -302,6 +398,7 @@ button {
   line-height: 1.02;
   font-weight: 700;
   letter-spacing: -0.035em;
+  text-wrap: balance;
   margin: 0 0 24px;
 }
 
@@ -310,10 +407,12 @@ button {
   line-height: 1.85;
   color: rgba(255, 255, 255, 0.72);
   max-width: 54ch;
+  text-wrap: pretty;
   margin: 0;
 }
 
 .bismillah {
+  -webkit-tap-highlight-color: transparent;
   align-self: center;
   width: 300px;
   max-width: 62%;
@@ -369,6 +468,7 @@ button {
 
 .listcount {
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
   color: var(--muted);
 }
 
@@ -421,10 +521,15 @@ button {
 }
 
 .recname {
+  display: inline-block;
+  padding-block: 4px;
+  margin-block: -4px;
   color: var(--link);
 }
 
-.recname:hover {
+/* Anchors only. A span.recname is the record's identifier, not a control, and
+   underlining it on hover promised a click that never happened. */
+a.recname:hover {
   text-decoration: underline;
 }
 
@@ -435,16 +540,68 @@ button {
   white-space: nowrap;
 }
 
+.colyear {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The cell already supplies the 16px gutter. A second one indented every
+   description away from the row it describes. */
 .detail {
-  padding: 2px 16px 16px;
-  max-width: 76ch;
+  padding: 2px 0 16px;
 }
 
 .detail p {
   margin: 0 0 8px;
   font-size: 14px;
   line-height: 1.75;
+  max-width: 76ch;
+  text-wrap: pretty;
   color: var(--muted);
+}
+
+/* Evidence: the screenshot and where it goes. 860px matches the form grid, so
+   the widest thing on a record is one number rather than two. */
+.evidence {
+  max-width: 860px;
+  margin-top: 12px;
+}
+
+.shot {
+  display: block;
+  border: 1px solid var(--line);
+  line-height: 0;
+}
+
+.shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+a.shot:hover {
+  border-color: var(--link);
+}
+
+a.shot:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+/* Separate, labelled links, because they go to separate places. An image that
+   silently means something different from the title next to it is a guess. */
+.projlinks {
+  display: flex;
+  gap: 20px;
+  margin: 10px 0 0;
+}
+
+.projlinks a {
+  font-size: 14px;
+  color: var(--link);
+}
+
+.projlinks a:hover {
+  text-decoration: underline;
 }
 
 .detaillink {
@@ -456,17 +613,6 @@ button {
   text-decoration: underline;
 }
 
-.visual {
-  margin-top: 12px;
-  height: 180px;
-  border: 1px solid var(--line);
-  background: var(--zebra);
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  color: var(--muted);
-}
-
 .noresults {
   font-size: 14px;
   color: var(--muted);
@@ -476,18 +622,25 @@ button {
 /* stickers */
 
 .stickerfit {
+  position: relative;
   width: 100%;
   margin-top: 16px;
-  overflow: hidden;
 }
 
+/* Taken out of flow deliberately. The stage is authored at a fixed size and
+   scaled with a transform, and a transform does not change the layout box, so
+   in flow this 1050px-wide div would widen the page at every smaller size.
+   .stickerfit carries the real height inline; this only has to sit in it. */
 .stickers {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   transform-origin: top left;
   touch-action: none;
 }
 
 .sticker {
+  -webkit-tap-highlight-color: transparent;
   position: absolute;
   top: 0;
   left: 0;
@@ -530,8 +683,11 @@ button {
 
 .stickerreset {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  /* The stage is scaled, so the authored padding has to overshoot to land on
+     a 24px target once the transform is applied. */
+  bottom: -7px;
+  left: -8px;
+  padding: 7px 8px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -546,11 +702,14 @@ button {
   }
 }
 
+/* 900px is the layout switch: rail from column to scrolling row. 690px is the
+   content switch: the collage and the disclaimer change shape. Nothing else
+   should invent a third number. */
 @media (max-width: 900px) {
   .header {
     grid-template-columns: 1fr auto;
     gap: 10px;
-    padding-right: 12px;
+    padding-right: max(12px, env(safe-area-inset-right));
   }
 
   .wordmark {
@@ -562,12 +721,14 @@ button {
     display: none;
   }
 
+  /* The header keeps its fixed position at this width, so the rail has to
+     start below it. Without this the filter renders underneath the wordmark:
+     visible in neither sense, and elementFromPoint returns the header. */
   .rail {
     position: static;
     width: auto;
     height: auto;
-    padding: 12px 0;
-    opacity: 1 !important;
+    padding: calc(var(--header) + 12px) 0 12px;
   }
 
   .railmodules-mobilehide {
@@ -579,6 +740,9 @@ button {
     gap: 4px;
     overflow-x: auto;
     padding: 0 12px;
+    scroll-padding-inline: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
   }
 
   .railrow .appblock {
@@ -603,10 +767,6 @@ button {
     padding: 0 0 20vh;
   }
 
-  .about {
-    min-height: 60vh;
-  }
-
   .hello {
     font-size: 42px;
   }
@@ -615,25 +775,30 @@ button {
     display: none;
   }
 
-  /* scaling is handled in the component now */
-
+  /* One rule, and no negative margin: .main has no horizontal padding at this
+     width, so the black panel is already full bleed. */
   .about {
-    margin: 0 -16px;
-    padding: 0 16px 40px;
+    min-height: 60vh;
+    min-height: 60dvh;
+    padding-bottom: 40px;
   }
 }
 
 /* form view — for applications holding a single record, the way the
    platform opens one record rather than listing many */
 
+/* 4px here plus 12px on the cells lands the labels on the same 16px gutter as
+   the tables, the way the links panel already does it. */
 .formview {
   border-bottom: 1px solid var(--line);
-  padding: 6px 16px 18px;
+  padding: 6px 4px 18px;
 }
 
 .formgrid {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
+  /* 200px label column plus the 12px gap the links panel gets from grid-gap,
+     so the value columns of the two views share an edge. */
+  grid-template-columns: 212px minmax(0, 1fr);
   gap: 0;
   margin: 0;
   max-width: 860px;
@@ -687,7 +852,10 @@ button {
 }
 
 @media (max-width: 900px) {
-  .formgrid,
+  .formgrid {
+    grid-template-columns: 142px minmax(0, 1fr);
+  }
+
   .linkspanel li {
     grid-template-columns: 130px minmax(0, 1fr);
   }
@@ -708,9 +876,10 @@ button {
 /* disclaimer — the platform's error notification, which is the joke */
 
 .disclaimer {
+  -webkit-tap-highlight-color: transparent;
   position: absolute;
   left: 50%;
-  bottom: 8px;
+  bottom: 0;
   margin-left: -230px;
   width: 460px;
   display: flex;
@@ -766,16 +935,119 @@ button {
 }
 
 
+/* The padding is the disclaimer's own row. Pinned to bottom: 8px it sat on top
+   of the last sticker row; the notification is meant to sit under the collage,
+   not in it. It can still be dragged back over if you want it there. */
 .stickerstage {
   position: relative;
+  padding-bottom: 72px;
 }
 
-@media (max-width: 900px) {
+/* Full width with wrapping turned the notification into a slab two lines tall,
+   which is not what the platform shows and not what the desktop shows. Keep the
+   pill, shrink it to fit the pane, and centre it under the collage. 690px is
+   where the collage itself switches to its narrow layout, so both flip together. */
+@media (max-width: 690px) {
+  .stickerstage {
+    padding-bottom: 56px;
+  }
+
   .disclaimer {
     left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: max-content;
+    max-width: 100%;
+    gap: 8px;
+    padding: 6px 12px 6px 6px;
+  }
+
+  .disclaimerpill {
+    padding: 4px 10px;
+    font-size: 11px;
+    gap: 6px;
+  }
+
+  .disclaimericon {
+    width: 14px;
+    height: 14px;
+    font-size: 10px;
+  }
+
+  .disclaimertext {
+    font-size: 11px;
+  }
+}
+
+/* Motion is decoration here: a chevron turning, a star fading in, the scroll
+   easing to a record. None of it carries meaning, so all of it can go. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Printing the index should give the record tables, not a full page of black
+   with thirteen stickers on it. /cv is still the better thing to print. */
+@media print {
+  .skiplink,
+  .header,
+  .rail,
+  .stickerstage,
+  .bismillah,
+  .scrollhint {
+    display: none !important;
+  }
+
+  .main {
     margin-left: 0;
-    width: 100%;
-    border-radius: 8px;
-    flex-wrap: wrap;
+    padding-top: 0;
+    min-height: 0;
+  }
+
+  .about {
+    min-height: 0;
+    padding: 0 0 12pt;
+    background: none;
+    color: #000000;
+    break-after: avoid;
+  }
+
+  .hello {
+    font-size: 24pt;
+    margin-bottom: 8pt;
+  }
+
+  .abouttext {
+    color: #000000;
+  }
+
+  .inner {
+    padding: 0;
+  }
+
+  .listtoolbar {
+    background: none;
+    border-bottom: 1px solid #000000;
+  }
+
+  .evidence {
+    display: none;
+  }
+
+  .appsection,
+  .recordtable tr,
+  .formview,
+  .linkspanel li {
+    break-inside: avoid;
+  }
+
+  .appsection + .appsection .listtoolbar {
+    margin-top: 18pt;
   }
 }
