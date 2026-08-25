@@ -6,12 +6,14 @@ import "./cv.css";
 export const metadata: Metadata = {
   title: "Ibrahim Uthman — CV",
   description: "ServiceNow Developer. CSA and CAD certified.",
+  alternates: { canonical: "/cv" },
 };
 
 const contact = applications.find((a) => a.id === "contact")!;
 const experience = applications.find((a) => a.id === "experience")!;
 const certifications = applications.find((a) => a.id === "certifications")!;
 const education = applications.find((a) => a.id === "education")!;
+const skills = applications.find((a) => a.id === "skills")!;
 const projects = applications.find((a) => a.id === "projects")!;
 
 export default function CV() {
@@ -28,7 +30,7 @@ export default function CV() {
           {contact.records
             .filter((r) => r.id !== "cv")
             .map((r) => r.fields.handle)
-            .join("  ·  ")}
+            .join("  ·  ")}
         </p>
       </header>
 
@@ -56,7 +58,7 @@ export default function CV() {
 
       <section>
         <h2>Projects</h2>
-        {projects.records.slice(0, 4).map((r) => (
+        {projects.records.filter((r) => r.onCv).map((r) => (
           <article className="cventry" key={r.id}>
             <div className="cvrow">
               <span className="cvtitle">{r.name}</span>
@@ -64,6 +66,16 @@ export default function CV() {
             </div>
             {r.built && <ul><li>{r.built}</li></ul>}
           </article>
+        ))}
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        {skills.records.map((r) => (
+          <div className="cvrow cvskill" key={r.id}>
+            <span className="cvtitle">{r.name}</span>
+            <span>{r.fields.value}</span>
+          </div>
         ))}
       </section>
 
@@ -96,7 +108,7 @@ export default function CV() {
       </div>
 
       <p className="cvprint">
-        This page prints clean. Use your browser's print dialogue and save as PDF.
+        This page prints clean. Use your browser’s print dialogue and save as PDF.
       </p>
     </main>
   );
