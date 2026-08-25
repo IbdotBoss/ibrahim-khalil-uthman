@@ -414,7 +414,7 @@ button.chev::after {
   max-width: 1280px;
   margin: 0 auto;
   /* 16px, the same gutter the toolbars, tables and link rows sit on. */
-  padding: 40px 16px 48px;
+  padding: 40px 16px 24px;
 }
 
 .helloline {
@@ -503,12 +503,6 @@ button.chev::after {
 .bismillah:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 6px;
-}
-
-.scrollhint {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 40px;
 }
 
 /* list view */
@@ -862,7 +856,7 @@ a.shot:focus-visible {
   .about {
     min-height: 60vh;
     min-height: 60dvh;
-    padding-bottom: 40px;
+    padding-bottom: 16px;
   }
 }
 
@@ -1083,8 +1077,7 @@ a.shot:focus-visible {
   .header,
   .rail,
   .stickerstage,
-  .bismillah,
-  .scrollhint {
+  .bismillah {
     display: none !important;
   }
 

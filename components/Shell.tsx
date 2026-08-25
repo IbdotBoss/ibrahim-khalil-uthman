@@ -303,7 +303,6 @@ export default function Shell({
                 <Stickers files={stickers} />
                 <Disclaimer text={about.caution} />
               </div>
-              <p className="scrollhint">scroll, or pick a module</p>
               <p className="visuallyhidden" id="draghint">
                 Drag it, or move it with the arrow keys.
               </p>
