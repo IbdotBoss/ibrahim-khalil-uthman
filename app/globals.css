@@ -627,21 +627,38 @@ a.shot:focus-visible {
 
 /* stickers */
 
+/* The fit box is a container, and its own aspect ratio is the stage's: a stage
+   scaled to a width takes that width times its ratio in height. That gives the
+   right height with no measurement, and no inline style to wait for. */
 .stickerfit {
+  container-type: inline-size;
   position: relative;
   width: 100%;
+  max-width: var(--stage-w);
+  aspect-ratio: var(--stage-ratio);
   margin-top: 16px;
 }
 
 /* Taken out of flow deliberately. The stage is authored at a fixed size and
    scaled with a transform, and a transform does not change the layout box, so
    in flow this 1050px-wide div would widen the page at every smaller size.
-   .stickerfit carries the real height inline; this only has to sit in it. */
+
+   The scale used to be measured in an effect, which meant the served HTML
+   always said scale(1) and a phone painted the full desktop collage, cropped,
+   before correcting itself. CSS can do the division instead: atan2 of two
+   lengths is an angle, and tan of that angle is their ratio, which is the
+   standard way to get a unitless number out of two lengths. Note the ratio has
+   to be computed here rather than on .stickerfit, because an element does not
+   query itself: cqw inside a container resolves against that container, but on
+   the container it resolves against the next one out. */
 .stickers {
   position: absolute;
   top: 0;
   left: 0;
+  width: var(--stage-w);
+  height: var(--stage-h);
   transform-origin: top left;
+  transform: scale(min(1, tan(atan2(100cqw, var(--stage-w)))));
   touch-action: none;
 }
 

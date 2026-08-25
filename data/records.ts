@@ -166,7 +166,7 @@ export const applications: Application[] = [
     records: [
       {
         id: "servicenow-jobs-digest",
-        name: "servicenow jobs digest",
+        name: "ServiceNow Jobs Digest",
         href: "https://ibdotboss.github.io/servicenow-jobs-digest/",
         repo: "https://github.com/IbdotBoss/servicenow-jobs-digest",
         shot: "servicenow-jobs-digest",
@@ -178,7 +178,7 @@ export const applications: Application[] = [
       },
       {
         id: "cad-quiz",
-        name: "cad quiz",
+        name: "CAD Quiz",
         href: "https://ibdotboss.github.io/cad-quiz/",
         repo: "https://github.com/IbdotBoss/cad-quiz",
         shot: "cad-quiz",
@@ -190,7 +190,7 @@ export const applications: Application[] = [
       },
       {
         id: "curate",
-        name: "curate",
+        name: "Curate",
         shot: "curate",
         fields: { state: "active", stack: "Next.js · SQLite", year: "2026" },
         problem: "Mass applying produces a hundred weak applications. The bottleneck is evidence, not volume.",
@@ -199,7 +199,7 @@ export const applications: Application[] = [
       },
       {
         id: "wallet-talk",
-        name: "wallet talk",
+        name: "Wallet Talk",
         href: "https://wallet-talk.vercel.app/",
         repo: "https://github.com/IbdotBoss/wallet-talk",
         shot: "wallet-talk",
@@ -210,7 +210,7 @@ export const applications: Application[] = [
       },
       {
         id: "nansta",
-        name: "nansta",
+        name: "Nansta",
         href: "https://nansta-next.vercel.app/",
         repo: "https://github.com/IbdotBoss/nansta",
         shot: "nansta",
@@ -221,7 +221,7 @@ export const applications: Application[] = [
       },
       {
         id: "lunar-shift",
-        name: "lunar shift",
+        name: "Lunar Shift",
         href: "https://lunar-shift.vercel.app/",
         repo: "https://github.com/IbdotBoss/lunar-shift",
         shot: "lunar-shift",

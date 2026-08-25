@@ -112,26 +112,17 @@ export default function Stickers({ files }: { files: StickerFile[] }) {
   const initial = useRef<Sticker[]>(build(files, false));
   const [items, setItems] = useState<Sticker[]>(initial.current);
   const [dragId, setDragId] = useState<string | null>(null);
-  const [scale, setScale] = useState(1);
+  const scaleRef = useRef(1);
   const offset = useRef({ x: 0, y: 0 });
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const bounds = useRef<{ minX: number; minY: number; maxX: number; maxY: number } | null>(null);
 
-  // The collage is authored at a fixed stage size and scaled to whatever width
-  // the pane actually has. Without this the stickers are simply wider than the
-  // content area on a smaller window, which pushes the whole page sideways and
-  // leaves a strip of dead space beside the black panel. Below NARROW_AT it
-  // swaps to the tall layout rather than shrinking the wide one to a third.
+  // Which of the two coordinate maps applies. The scale that goes with it is
+  // handled entirely in CSS; this only decides where the stickers are placed.
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    const fit = () => {
-      const w = el.clientWidth;
-      const isNarrow = w < NARROW_AT;
-      const stage = isNarrow ? STAGE.narrow : STAGE.wide;
-      setNarrow(isNarrow);
-      setScale(Math.min(1, w / stage.w));
-    };
+    const fit = () => setNarrow(el.clientWidth < NARROW_AT);
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(el);
@@ -148,11 +139,13 @@ export default function Stickers({ files }: { files: StickerFile[] }) {
   // The black panel, expressed in stage coordinates, so a sticker can be moved
   // anywhere on the visible screen but never off it. Measured once per gesture
   // rather than per pointermove.
-  const measure = useCallback((s: Sticker) => {
+  const measure = useCallback((s: Sticker, stageW: number) => {
     const el = wrapRef.current;
     const panel = el?.closest(".about")?.getBoundingClientRect();
     if (!el || !panel) return (bounds.current = null);
     const fit = el.getBoundingClientRect();
+    // Read back what CSS painted, rather than keeping a second copy in state.
+    const scale = (scaleRef.current = Math.min(1, fit.width / stageW));
 
     // The drawn box, not the image box: a framed sticker adds its padding, and
     // every sticker is rotated a few degrees, which makes the axis-aligned box
@@ -171,7 +164,7 @@ export default function Stickers({ files }: { files: StickerFile[] }) {
       maxX: (panel.right - fit.left) / scale - w - padX,
       maxY: (panel.bottom - fit.top) / scale - h - padY,
     };
-  }, [scale]);
+  }, []);
 
   const clamp = useCallback((x: number, y: number) => {
     const b = bounds.current;
@@ -186,15 +179,17 @@ export default function Stickers({ files }: { files: StickerFile[] }) {
     try {
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     } catch {}
-    measure(s);
+    measure(s, narrow ? STAGE.narrow.w : STAGE.wide.w);
+    const scale = scaleRef.current;
     offset.current = { x: e.clientX / scale - s.x, y: e.clientY / scale - s.y };
     setDragId(s.id);
     setItems((prev) => [...prev.filter((p) => p.id !== s.id), prev.find((p) => p.id === s.id)!]);
-  }, [scale, measure]);
+  }, [narrow, measure]);
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!dragId) return;
+      const scale = scaleRef.current;
       setItems((prev) =>
         prev.map((p) =>
           p.id === dragId
@@ -203,23 +198,32 @@ export default function Stickers({ files }: { files: StickerFile[] }) {
         )
       );
     },
-    [dragId, scale, clamp]
+    [dragId, clamp]
   );
 
   const nudge = useCallback((s: Sticker, dx: number, dy: number) => {
-    measure(s);
+    measure(s, narrow ? STAGE.narrow.w : STAGE.wide.w);
     setItems((prev) => prev.map((p) => (p.id === s.id ? { ...p, ...clamp(p.x + dx, p.y + dy) } : p)));
-  }, [measure, clamp]);
+  }, [narrow, measure, clamp]);
 
   if (!items.length) return null;
 
   const stage = narrow ? STAGE.narrow : STAGE.wide;
 
   return (
-    <div className="stickerfit" ref={wrapRef} style={{ height: stage.h * scale }}>
+    <div
+      className="stickerfit"
+      ref={wrapRef}
+      style={
+        {
+          "--stage-w": `${stage.w}px`,
+          "--stage-h": `${stage.h}px`,
+          "--stage-ratio": `${stage.w} / ${stage.h}`,
+        } as React.CSSProperties
+      }
+    >
       <div
         className="stickers"
-        style={{ width: stage.w, height: stage.h, transform: `scale(${scale})` }}
         onPointerMove={onPointerMove}
         onPointerUp={() => setDragId(null)}
       >
